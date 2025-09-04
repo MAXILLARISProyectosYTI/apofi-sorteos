@@ -249,7 +249,7 @@ export default function Home() {
                               <div className="flex items-center justify-center lg:justify-start gap-4 text-white/80">
                   <div className="flex items-center gap-2">
                     <span className="text-blue-300 text-2xl">⏰</span>
-                    <span className="text-sm">Solo hasta el 26 de diciembre de 2024</span>
+                    <span className="text-sm">Solo hasta el 6 de septiembre de 2025</span>
                   </div>
                 </div>
             </div>

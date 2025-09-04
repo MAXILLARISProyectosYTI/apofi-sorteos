@@ -44,7 +44,7 @@ export default function Dates() {
                 <div className="flex items-center justify-center md:justify-start gap-3">
                   <Calendar className="w-5 h-5 text-blue-600" />
                   <span className="text-lg font-semibold text-gray-800">
-                    Jueves 26 de diciembre de 2024
+                    Sábado 6 de septiembre de 2025
                   </span>
                 </div>
                 

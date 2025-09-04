@@ -90,7 +90,7 @@ export default function Form() {
             ¡Participación confirmada!
           </h3>
           <p className="text-gray-600 mb-6">
-            Tu participación ha sido registrada exitosamente. Te notificaremos los resultados el 26 de diciembre.
+            Tu participación ha sido registrada exitosamente. Te notificaremos los resultados el 6 de septiembre.
           </p>
           <button
             onClick={() => {
