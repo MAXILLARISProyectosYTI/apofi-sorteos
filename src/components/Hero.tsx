@@ -64,7 +64,7 @@ export default function Hero({ onScrollToForm }: HeroProps) {
             </button>
             
             <p className="text-sm text-gray-500">
-              ⏰ Solo hasta el 24 de marzo de 2025
+              ⏰ Solo hasta el 26 de diciembre de 2024
             </p>
           </motion.div>
         </motion.div>

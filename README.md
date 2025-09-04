@@ -78,7 +78,7 @@ src/
 - Estados de envío y confirmación
 
 ### Dates Section
-- Fecha del sorteo (24 de marzo 2025)
+- Fecha del sorteo (26 de diciembre 2024)
 - Enlace a Facebook para resultados
 - Información adicional del sorteo
 

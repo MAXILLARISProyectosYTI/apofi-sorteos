@@ -219,11 +219,20 @@ export default function Home() {
             </span>
             </h1>
             
-            <p className={`text-xl md:text-2xl text-white/90 mb-10 leading-relaxed transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <p className={`text-xl md:text-2xl text-white/90 mb-6 leading-relaxed transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <strong className="text-blue-300">Maxillaris en convenio con APOFI</strong> te ofrece ganar uno de los{' '}
               <strong className="text-yellow-300">5 bonos</strong> con{' '}
               <strong className="text-yellow-300">85% de descuento</strong> en tu tratamiento
             </p>
+            
+            <div className={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-10 border border-white/20 transition-all duration-700 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <p className="text-lg text-white/95 leading-relaxed mb-4">
+                <strong className="text-yellow-300">El tratamiento ayuda a recuperar tu descanso, energía y mejorar la armonía familiar evitando los ronquidos.</strong>
+              </p>
+              <p className="text-lg text-white/90 leading-relaxed">
+                Solo pagarías el <strong className="text-green-300">30% del valor</strong> (aprox. <strong className="text-green-300">$600</strong>).
+              </p>
+            </div>
             
             <div className={`space-y-6 transition-all duration-700 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <button 
@@ -240,7 +249,7 @@ export default function Home() {
                               <div className="flex items-center justify-center lg:justify-start gap-4 text-white/80">
                   <div className="flex items-center gap-2">
                     <span className="text-blue-300 text-2xl">⏰</span>
-                    <span className="text-sm">Solo hasta el 25 de agosto de 2025</span>
+                    <span className="text-sm">Solo hasta el 26 de diciembre de 2024</span>
                   </div>
                 </div>
             </div>
