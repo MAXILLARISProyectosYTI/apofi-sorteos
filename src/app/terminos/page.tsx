@@ -134,7 +134,7 @@ export default function Terminos() {
                   <div className="flex items-start gap-3">
                     <span className="text-green-600 text-lg">💰</span>
                     <div>
-                      <strong>Precio del tratamiento:</strong> $1,000 USD
+                      <strong>Precio del tratamiento:</strong> $1,200 USD
                       <ul className="mt-2 ml-4 space-y-1 text-sm">
                         <li>• Incluye planificación con radiografías</li>
                         <li>• Incluye aparato de MARPE</li>
