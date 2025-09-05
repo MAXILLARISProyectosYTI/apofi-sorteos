@@ -169,7 +169,7 @@ export default function Home() {
                             <p className="text-3xl md:text-5xl text-slate-700 mb-8">
                               <span className="block animate-text-depth">Te regala</span>
                               <span className="block text-4xl md:text-6xl font-bold text-blue-700 transform translate-z-30 gpu-accelerated animate-text-depth" style={{ animationDelay: '1s' }}>
-                                85% de descuento
+                                70% de descuento
                               </span>
                             </p>
                           </div>
@@ -222,7 +222,7 @@ export default function Home() {
             <p className={`text-xl md:text-2xl text-white/90 mb-6 leading-relaxed transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <strong className="text-blue-300">Maxillaris en convenio con APOFI</strong> te ofrece ganar uno de los{' '}
               <strong className="text-yellow-300">5 bonos</strong> con{' '}
-              <strong className="text-yellow-300">85% de descuento</strong> en tu tratamiento
+              <strong className="text-yellow-300">70% de descuento</strong> en tu tratamiento
             </p>
             
             <div className={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-10 border border-white/20 transition-all duration-700 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -360,7 +360,7 @@ export default function Home() {
               ¡Participa ahora!
             </h2>
             <p className="text-2xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
-              Completa el formulario y participa por uno de los <strong className="text-blue-600">5 bonos con 85% de descuento</strong> en tu tratamiento dental
+              Completa el formulario y participa por uno de los <strong className="text-blue-600">5 bonos con 70% de descuento</strong> en tu tratamiento dental
             </p>
           </div>
 
@@ -626,7 +626,7 @@ export default function Home() {
                     </h3>
                     <div className="space-y-4">
                       {[
-                        '85% de descuento en tu tratamiento',
+                        '70% de descuento en tu tratamiento',
                         '1er Aparato incluido (no lo pagas)',
                         'Controles incluidos',
                         'Válido hasta el día del sorteo',
@@ -649,7 +649,7 @@ export default function Home() {
                       <p className="text-gray-600">Bonos disponibles</p>
                     </div>
                     <div className="bg-white rounded-2xl p-6 text-center shadow-lg border border-blue-100 transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
-                      <div className="text-4xl font-bold text-blue-600 mb-2 animate-pulse">85%</div>
+                      <div className="text-4xl font-bold text-blue-600 mb-2 animate-pulse">70%</div>
                       <p className="text-gray-600">Descuento incluido</p>
                     </div>
                   </div>
@@ -696,7 +696,7 @@ export default function Home() {
                       </div>
                       <div className="flex items-center gap-2 justify-center">
                         <span className="text-lg">3️⃣</span>
-                        <span>Obtienes tu bono del 85%</span>
+                        <span>Obtienes tu bono del 70%</span>
                       </div>
                     </div>
                   </div>

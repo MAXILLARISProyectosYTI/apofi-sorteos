@@ -79,7 +79,7 @@ export default function Terminos() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Premios</h2>
               <div className="space-y-3">
                 <p className="leading-relaxed">
-                  <strong>4.1 Cantidad:</strong> Se sortearán 5 bonos con 85% de descuento en tratamientos odontológicos.
+                  <strong>4.1 Cantidad:</strong> Se sortearán 5 bonos con 70% de descuento en tratamientos odontológicos.
                 </p>
                 <p className="leading-relaxed">
                   <strong>4.2 Aplicación:</strong> Los bonos son aplicables a tratamientos de ortodoncia funcional 
