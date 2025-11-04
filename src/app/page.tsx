@@ -1,15 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { User, Phone, Mail, CheckCircle2, FileText, Shield } from 'lucide-react';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [countdown, setCountdown] = useState(4);
   const [formData, setFormData] = useState({
-    firstName: '',
-    paternalLastName: '',
-    maternalLastName: '',
+    fullName: '',
     phone: '',
     email: '',
     acceptTerms: false
@@ -51,13 +50,19 @@ export default function Home() {
     setIsSubmitting(true);
     
     try {
+      // Dividir el nombre completo en partes para la API
+      const nameParts = formData.fullName.trim().split(/\s+/);
+      const firstName = nameParts[0] || '';
+      const lastNameFather = nameParts.length > 1 ? nameParts[1] : '';
+      const lastNameMother = nameParts.length > 2 ? nameParts.slice(2).join(' ') : '';
+      
       // Preparar los datos para la API de Maxillaris
       const apiData = {
-        firstName: formData.firstName,
-        lastNameFather: formData.paternalLastName,
-        lastNameMother: formData.maternalLastName,
-        phoneNumber: formData.phone,
-        email: formData.email,
+        firstName: firstName,
+        lastNameFather: lastNameFather,
+        lastNameMother: lastNameMother,
+        phoneNumber: formData.phone.trim(),
+        email: formData.email.trim(),
         nameCampaign: 'apofi_04112025'
       };
 
@@ -98,7 +103,7 @@ export default function Home() {
   };
 
   const resetForm = () => {
-    setFormData({ firstName: '', paternalLastName: '', maternalLastName: '', phone: '', email: '', acceptTerms: false });
+    setFormData({ fullName: '', phone: '', email: '', acceptTerms: false });
     setIsSubmitted(false);
     setShowConfirmation(false);
     setApiError(null);
@@ -386,234 +391,207 @@ export default function Home() {
           ) : (
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Formulario principal */}
-              <div className={`bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-blue-100 transition-all duration-1000 relative overflow-hidden ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                {/* Elementos decorativos del formulario */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full -translate-y-16 translate-x-16 opacity-60 animate-float"></div>
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-100 to-purple-100 rounded-full translate-y-12 -translate-x-12 opacity-60 animate-float" style={{ animationDelay: '1s' }}></div>
+              <div className={`bg-white rounded-2xl shadow-xl p-8 md:p-10 border border-gray-100 transition-all duration-1000 relative overflow-hidden ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                {/* Elementos decorativos sutiles */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-50/50 to-cyan-50/50 rounded-full -translate-y-32 translate-x-32 blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-indigo-50/50 to-purple-50/50 rounded-full translate-y-24 -translate-x-24 blur-3xl"></div>
                 
                 {/* Header del formulario */}
-                <div className="text-center mb-8 relative z-10">
-                  <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
-                    <span className="text-xl">📋</span>
-                    Formulario de Participación
+                <div className="mb-8 relative z-10">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-blue-50 rounded-lg">
+                      <FileText className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900">Formulario de Participación</h3>
+                      <p className="text-sm text-gray-500 mt-0.5">Completa tus datos en menos de 1 minuto</p>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">¡Completa tus datos!</h3>
-                  <p className="text-gray-600">Solo necesitamos 5 campos para participar</p>
+                  <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-                  {/* Indicador de progreso */}
-                  <div className="mb-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-600">Progreso del formulario</span>
-                      <span className="text-sm font-medium text-blue-600">
-                        {((formData.firstName && formData.paternalLastName && formData.maternalLastName && formData.phone && formData.email && formData.acceptTerms) ? 100 : 
-                          ((formData.firstName ? 1 : 0) + (formData.paternalLastName ? 1 : 0) + (formData.maternalLastName ? 1 : 0) + (formData.phone ? 1 : 0) + (formData.email ? 1 : 0) + (formData.acceptTerms ? 1 : 0)) * 16.67).toFixed(0)}%
+                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                  {/* Indicador de progreso mejorado */}
+                  <div className="mb-8 bg-gray-50 rounded-xl p-4 border border-gray-100">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Progreso de Completado</span>
+                      <span className="text-sm font-bold text-blue-600">
+                        {((formData.fullName && formData.phone && formData.email && formData.acceptTerms) ? 100 : 
+                          ((formData.fullName ? 1 : 0) + (formData.phone ? 1 : 0) + (formData.email ? 1 : 0) + (formData.acceptTerms ? 1 : 0)) * 25).toFixed(0)}%
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                       <div 
-                        className="bg-gradient-to-r from-blue-500 to-cyan-600 h-2 rounded-full transition-all duration-500 ease-out"
+                        className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 h-2.5 rounded-full transition-all duration-700 ease-out shadow-sm"
                         style={{ 
-                          width: `${(formData.firstName && formData.paternalLastName && formData.maternalLastName && formData.phone && formData.email && formData.acceptTerms) ? 100 : 
-                            ((formData.firstName ? 1 : 0) + (formData.paternalLastName ? 1 : 0) + (formData.maternalLastName ? 1 : 0) + (formData.phone ? 1 : 0) + (formData.email ? 1 : 0) + (formData.acceptTerms ? 1 : 0)) * 16.67}%` 
+                          width: `${(formData.fullName && formData.phone && formData.email && formData.acceptTerms) ? 100 : 
+                            ((formData.fullName ? 1 : 0) + (formData.phone ? 1 : 0) + (formData.email ? 1 : 0) + (formData.acceptTerms ? 1 : 0)) * 25}%` 
                         }}
                       ></div>
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <label htmlFor="firstName" className="block text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                      <span className="text-2xl">👤</span>
-                      Nombre *
+                  <div className="space-y-2">
+                    <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                      <User className="w-4 h-4 text-gray-400" />
+                      Nombre Completo
+                      <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
+                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                        <User className="w-5 h-5" />
+                      </div>
                       <input
                         type="text"
-                        id="firstName"
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange('firstName', e.target.value)}
-                        placeholder="Tu nombre"
-                        className="w-full px-6 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-blue-400/30 focus:border-blue-500 transition-all duration-300 hover:border-blue-300 pr-12"
+                        id="fullName"
+                        value={formData.fullName}
+                        onChange={(e) => handleInputChange('fullName', e.target.value)}
+                        placeholder="Ej: Juan Pérez García"
+                        className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
                         required
                       />
-                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                        <span className="text-blue-500 text-xl">👤</span>
-                      </div>
                     </div>
-                    {formData.firstName && (
-                      <div className="flex items-center gap-2 text-green-600 text-sm">
-                        <span className="text-lg">✅</span>
-                        Nombre válido
+                    {formData.fullName && (
+                      <div className="flex items-center gap-2 text-green-600 text-xs font-medium">
+                        <CheckCircle2 className="w-4 h-4" />
+                        Campo completado
                       </div>
                     )}
                   </div>
 
-                  <div className="space-y-3">
-                    <label htmlFor="paternalLastName" className="block text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                      <span className="text-2xl">👨‍👩‍👧‍👦</span>
-                      Apellido Paterno *
+                  <div className="space-y-2">
+                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-gray-400" />
+                      Número de Celular
+                      <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        id="paternalLastName"
-                        value={formData.paternalLastName}
-                        onChange={(e) => handleInputChange('paternalLastName', e.target.value)}
-                        placeholder="Tu apellido paterno"
-                        className="w-full px-6 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-blue-400/30 focus:border-blue-500 transition-all duration-300 hover:border-blue-300 pr-12"
-                        required
-                      />
-                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                        <span className="text-blue-500 text-xl">👨‍👩‍👧‍👦</span>
+                    <div className="relative group">
+                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                        <Phone className="w-5 h-5" />
                       </div>
-                    </div>
-                    {formData.paternalLastName && (
-                      <div className="flex items-center gap-2 text-green-600 text-sm">
-                        <span className="text-lg">✅</span>
-                        Apellido paterno válido
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-3">
-                    <label htmlFor="maternalLastName" className="block text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                      <span className="text-2xl">👨‍👩‍👧‍👦</span>
-                      Apellido Materno *
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        id="maternalLastName"
-                        value={formData.maternalLastName}
-                        onChange={(e) => handleInputChange('maternalLastName', e.target.value)}
-                        placeholder="Tu apellido materno"
-                        className="w-full px-6 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-blue-400/30 focus:border-blue-500 transition-all duration-300 hover:border-blue-300 pr-12"
-                        required
-                      />
-                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                        <span className="text-blue-500 text-xl">👨‍👩‍👧‍👦</span>
-                      </div>
-                    </div>
-                    {formData.maternalLastName && (
-                      <div className="flex items-center gap-2 text-green-600 text-sm">
-                        <span className="text-lg">✅</span>
-                        Apellido materno válido
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-3">
-                    <label htmlFor="phone" className="block text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                      <span className="text-2xl">📱</span>
-                      Número de Celular *
-                    </label>
-                    <div className="relative">
                       <input
                         type="tel"
                         id="phone"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         placeholder="9 1234 5678"
-                        className="w-full px-6 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-blue-400/30 focus:border-blue-500 transition-all duration-300 hover:border-blue-300 pr-12"
+                        className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
                         required
                       />
-                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                        <span className="text-blue-500 text-xl">📱</span>
-                      </div>
                     </div>
                     {formData.phone && (
-                      <div className="flex items-center gap-2 text-green-600 text-sm">
-                        <span className="text-lg">✅</span>
-                        Número válido
+                      <div className="flex items-center gap-2 text-green-600 text-xs font-medium">
+                        <CheckCircle2 className="w-4 h-4" />
+                        Campo completado
                       </div>
                     )}
                   </div>
 
-                  <div className="space-y-3">
-                    <label htmlFor="email" className="block text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                      <span className="text-2xl">📧</span>
-                      Correo Electrónico *
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-gray-400" />
+                      Correo Electrónico
+                      <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
+                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                        <Mail className="w-5 h-5" />
+                      </div>
                       <input
                         type="email"
                         id="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="tu@email.com"
-                        className="w-full px-6 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl text-gray-800 placeholder-gray-400 focus:ring-4 focus:ring-blue-400/30 focus:border-blue-500 transition-all duration-300 hover:border-blue-300 pr-12"
+                        className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
                         required
                       />
-                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                        <span className="text-blue-500 text-xl">📧</span>
-                      </div>
                     </div>
                     {formData.email && (
-                      <div className="flex items-center gap-2 text-green-600 text-sm">
-                        <span className="text-lg">✅</span>
-                        Email válido
+                      <div className="flex items-center gap-2 text-green-600 text-xs font-medium">
+                        <CheckCircle2 className="w-4 h-4" />
+                        Campo completado
                       </div>
                     )}
                   </div>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="flex items-center h-6">
+                  <div className="flex items-start gap-3 pt-2">
+                    <div className="flex items-center h-5 mt-0.5">
                       <input
                         id="acceptTerms"
                         type="checkbox"
                         checked={formData.acceptTerms}
                         onChange={(e) => handleInputChange('acceptTerms', e.target.checked)}
-                        className="w-6 h-6 text-blue-500 border-2 border-gray-300 rounded focus:ring-4 focus:ring-blue-400/30 focus:border-blue-500 transition-all duration-300"
+                        className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 transition-all duration-200 cursor-pointer"
                         required
                       />
                     </div>
-                    <div className="text-gray-700">
-                      <label htmlFor="acceptTerms" className="text-lg leading-relaxed">
-                        Acepto los{' '}
-                        <a href="/terminos" className="text-blue-600 hover:text-blue-700 underline font-semibold">
-                          términos y condiciones
-                        </a>{' '}
-                        del sorteo *
-                      </label>
-                    </div>
+                    <label htmlFor="acceptTerms" className="text-sm text-gray-700 leading-relaxed cursor-pointer">
+                      He leído y acepto los{' '}
+                      <a href="/terminos" className="text-blue-600 hover:text-blue-700 font-semibold underline underline-offset-2 transition-colors">
+                        términos y condiciones
+                      </a>
+                      {' '}del sorteo
+                      <span className="text-red-500 ml-1">*</span>
+                    </label>
                   </div>
-
-                  {/* Mensaje de error de la API */}
-                  {apiError && (
-                    <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-4 text-center">
-                      <div className="flex items-center justify-center gap-2 text-red-600 mb-2">
-                        <span className="text-2xl">⚠️</span>
-                        <span className="font-semibold">Error de conexión</span>
-                      </div>
-                      <p className="text-red-600 text-sm">{apiError}</p>
-                      <button
-                        onClick={() => setApiError(null)}
-                        className="mt-3 text-red-500 hover:text-red-700 text-sm underline"
-                      >
-                        Cerrar mensaje
-                      </button>
+                  {formData.acceptTerms && (
+                    <div className="flex items-center gap-2 text-green-600 text-xs font-medium ml-8">
+                      <CheckCircle2 className="w-4 h-4" />
+                      Términos aceptados
                     </div>
                   )}
 
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-bold text-xl py-6 px-8 rounded-2xl shadow-2xl hover:shadow-blue-500/25 transform hover:-translate-y-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none overflow-hidden relative group"
-                  >
-                    {isSubmitting ? (
-                      <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-white mr-3"></div>
-                        Enviando...
+                  {/* Mensaje de error de la API */}
+                  {apiError && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0">
+                          <div className="w-5 h-5 bg-red-100 rounded-full flex items-center justify-center">
+                            <span className="text-red-600 text-xs">!</span>
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-red-800 mb-1">Error de conexión</p>
+                          <p className="text-sm text-red-600">{apiError}</p>
+                          <button
+                            onClick={() => setApiError(null)}
+                            className="mt-2 text-xs text-red-600 hover:text-red-800 font-medium underline"
+                          >
+                            Cerrar mensaje
+                          </button>
+                        </div>
                       </div>
-                    ) : (
-                      <span className="relative z-10 flex items-center justify-center gap-3">
-                        <span className="text-3xl">🎯</span>
-                        Quiero participar
-                      </span>
-                    )}
-                    <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  </button>
+                    </div>
+                  )}
+
+                  <div className="pt-4">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold text-base py-4 px-6 rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-lg relative group"
+                    >
+                      {isSubmitting ? (
+                        <div className="flex items-center justify-center gap-3">
+                          <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                          <span>Enviando datos...</span>
+                        </div>
+                      ) : (
+                        <span className="flex items-center justify-center gap-2">
+                          <span>Participar en el sorteo</span>
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                          </svg>
+                        </span>
+                      )}
+                    </button>
+                    
+                    {/* Mensaje de seguridad */}
+                    <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-500">
+                      <Shield className="w-4 h-4" />
+                      <span>Tus datos están protegidos y seguros</span>
+                    </div>
+                  </div>
                 </form>
               </div>
 
