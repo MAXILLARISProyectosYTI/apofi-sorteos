@@ -233,7 +233,7 @@ export default function Home() {
             
             <div className={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-10 border border-white/20 transition-all duration-700 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <p className="text-lg text-white/95 leading-relaxed mb-4">
-                <strong className="text-yellow-300">El tratamiento ayuda a recuperar tu descanso, energía y mejorar la armonía familiar evitando los ronquidos.</strong>
+                <strong className="text-yellow-300">A veces dejamos nuestro bienestar para después…  pero tu descanso, tu sonrisa y tu salud no pueden esperar más..</strong>
               </p>
               <p className="text-lg text-white/90 leading-relaxed">
                 Tendrás un descuento de mas de <strong className="text-green-300"></strong> <strong className="text-green-300">$2500</strong> en tu tratamiento.
