@@ -30,7 +30,7 @@ export default function AdminPage() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   // Contraseña secreta para acceder al admin
-  const SECRET_PASSWORD = "ajsbjkbjkb23kj4b2k3jb8/(/%&KKNBShkjsbdajsdj3124234ñmcklnvxcjwsnfdwduf";
+  const SECRET_PASSWORD = "Maxillaris2025@apofi_04112025";
 
   useEffect(() => {
     // Verificar si ya está autenticado (persistencia en sessionStorage)
@@ -69,7 +69,7 @@ export default function AdminPage() {
   const fetchRegistrations = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://www.support.maxillaris.pe/api6/campaigns');
+      const response = await fetch('https://www.support.maxillaris.pe/api6/campaigns/apofi_04112025');
       
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);

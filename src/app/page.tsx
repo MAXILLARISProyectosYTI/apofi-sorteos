@@ -57,7 +57,8 @@ export default function Home() {
         lastNameFather: formData.paternalLastName,
         lastNameMother: formData.maternalLastName,
         phoneNumber: formData.phone,
-        email: formData.email
+        email: formData.email,
+        nameCampaign: 'apofi_04112025'
       };
 
       console.log('Enviando datos a la API:', apiData);
@@ -230,7 +231,7 @@ export default function Home() {
                 <strong className="text-yellow-300">El tratamiento ayuda a recuperar tu descanso, energía y mejorar la armonía familiar evitando los ronquidos.</strong>
               </p>
               <p className="text-lg text-white/90 leading-relaxed">
-                Solo pagarías el <strong className="text-green-300">30% del valor</strong> (aprox. <strong className="text-green-300">$600</strong>).
+                Solo pagarías el <strong className="text-green-300">15% del valor</strong> (aprox. <strong className="text-green-300">$300</strong>).
               </p>
             </div>
             
@@ -249,7 +250,7 @@ export default function Home() {
                               <div className="flex items-center justify-center lg:justify-start gap-4 text-white/80">
                   <div className="flex items-center gap-2">
                     <span className="text-blue-300 text-2xl">⏰</span>
-                    <span className="text-sm">Solo hasta el 6 de septiembre de 2025</span>
+                    <span className="text-sm">Solo hasta el 6 de noviembre de 2025</span>
                   </div>
                 </div>
             </div>
@@ -668,12 +669,12 @@ export default function Home() {
                     <h4 className="text-xl font-bold mb-3">⏰ Tiempo Limitado</h4>
                     <div className="grid grid-cols-3 gap-2 text-center">
                       <div className="bg-white/20 rounded-lg p-3">
-                        <div className="text-2xl font-bold">25</div>
-                        <div className="text-sm">Agosto</div>
+                        <div className="text-2xl font-bold">06</div>
+                        <div className="text-sm">Noviembre</div>
                       </div>
                       <div className="bg-white/20 rounded-lg p-3">
-                        <div className="text-2xl font-bold">1:00</div>
-                        <div className="text-sm">PM</div>
+                        <div className="text-2xl font-bold">11:59</div>
+                        <div className="text-sm">AM</div>
                       </div>
                       <div className="bg-white/20 rounded-lg p-3">
                         <div className="text-2xl font-bold">2025</div>
