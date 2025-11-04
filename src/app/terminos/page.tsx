@@ -100,7 +100,7 @@ export default function Terminos() {
                   <div className="flex items-start gap-3">
                     <span className="text-blue-600 text-lg">💰</span>
                     <div>
-                      <strong>Precio del tratamiento:</strong> $300 USD
+                      <strong>Precio del tratamiento:</strong> $2500 USD
                       <ul className="mt-2 ml-4 space-y-1 text-sm">
                         <li>• Incluye 1era toma de ambas radiografías (Panorámica y Cefalométrica)</li>
                         <li>• Incluye su 1er aparato de ortodoncia funcional</li>
