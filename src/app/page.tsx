@@ -231,7 +231,7 @@ export default function Home() {
                 <strong className="text-yellow-300">El tratamiento ayuda a recuperar tu descanso, energía y mejorar la armonía familiar evitando los ronquidos.</strong>
               </p>
               <p className="text-lg text-white/90 leading-relaxed">
-                Solo pagarías el <strong className="text-green-300">15% del valor</strong> (aprox. <strong className="text-green-300">$2500</strong>).
+                Tendrás un descuento de mas de <strong className="text-green-300"></strong> <strong className="text-green-300">$2500</strong> en tu tratamiento.
               </p>
             </div>
             
