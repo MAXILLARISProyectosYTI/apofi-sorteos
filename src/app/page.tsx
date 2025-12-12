@@ -69,7 +69,7 @@ export default function Home() {
       console.log('Enviando datos a la API:', apiData);
 
       // Enviar datos a la API de Maxillaris
-      const response = await fetch('https://www.support.maxillaris.pe/api6/campaigns', {
+      const response = await fetch('https://www.support.maxillaris.pe/api_apofi/campaigns', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
