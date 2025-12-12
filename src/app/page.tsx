@@ -255,7 +255,7 @@ export default function Home() {
                               <div className="flex items-center justify-center lg:justify-start gap-4 text-white/80">
                   <div className="flex items-center gap-2">
                     <span className="text-blue-300 text-2xl">⏰</span>
-                    <span className="text-sm">Solo hasta el 6 de noviembre de 2025</span>
+                    <span className="text-sm">Solo hasta el 15 de diciembre del 2025</span>
                   </div>
                 </div>
             </div>
@@ -647,8 +647,8 @@ export default function Home() {
                     <h4 className="text-xl font-bold mb-3">⏰ Tiempo Limitado</h4>
                     <div className="grid grid-cols-3 gap-2 text-center">
                       <div className="bg-white/20 rounded-lg p-3">
-                        <div className="text-2xl font-bold">06</div>
-                        <div className="text-sm">Noviembre</div>
+                        <div className="text-2xl font-bold">15</div>
+                        <div className="text-sm">Diciembre</div>
                       </div>
                       <div className="bg-white/20 rounded-lg p-3">
                         <div className="text-2xl font-bold">11:59</div>
