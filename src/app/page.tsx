@@ -63,7 +63,7 @@ export default function Home() {
         lastNameMother: lastNameMother,
         phoneNumber: formData.phone.trim(),
         email: formData.email.trim(),
-        nameCampaign: 'apofi_04112025'
+        nameCampaign: 'apofi_13022026'
       };
 
       console.log('Enviando datos a la API:', apiData);
@@ -255,7 +255,7 @@ export default function Home() {
                               <div className="flex items-center justify-center lg:justify-start gap-4 text-white/80">
                   <div className="flex items-center gap-2">
                     <span className="text-blue-300 text-2xl">⏰</span>
-                    <span className="text-sm">Solo hasta el 15 de diciembre del 2025</span>
+                    <span className="text-sm">Solo hasta el 13 de febrero de 2026</span>
                   </div>
                 </div>
             </div>
@@ -647,15 +647,15 @@ export default function Home() {
                     <h4 className="text-xl font-bold mb-3">⏰ Tiempo Limitado</h4>
                     <div className="grid grid-cols-3 gap-2 text-center">
                       <div className="bg-white/20 rounded-lg p-3">
-                        <div className="text-2xl font-bold">15</div>
-                        <div className="text-sm">Diciembre</div>
+                        <div className="text-2xl font-bold">13</div>
+                        <div className="text-sm">Febrero</div>
                       </div>
                       <div className="bg-white/20 rounded-lg p-3">
-                        <div className="text-2xl font-bold">11:59</div>
-                        <div className="text-sm">AM</div>
+                        <div className="text-2xl font-bold">12:00</div>
+                        <div className="text-sm">PM</div>
                       </div>
                       <div className="bg-white/20 rounded-lg p-3">
-                        <div className="text-2xl font-bold">2025</div>
+                        <div className="text-2xl font-bold">2026</div>
                         <div className="text-sm">Año</div>
                       </div>
                     </div>
@@ -767,7 +767,7 @@ export default function Home() {
           
           <div className={`border-t border-gray-700 pt-8 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <p className="text-gray-400">
-              © 2025 APOFI. Todos los derechos reservados.
+              © 2026 APOFI. Todos los derechos reservados.
             </p>
           </div>
         </div>

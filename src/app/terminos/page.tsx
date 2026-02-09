@@ -192,10 +192,10 @@ export default function Terminos() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Fechas Importantes</h2>
               <div className="space-y-3">
                 <p className="leading-relaxed">
-                  <strong>6.1 Inscripción:</strong> Desde el momento de registro hasta el 25 de agosto de 2025.
+                  <strong>6.1 Inscripción:</strong> Desde el momento de registro hasta el 13 de febrero de 2026.
                 </p>
                 <p className="leading-relaxed">
-                  <strong>6.2 Sorteo:</strong> Domingo 25 de agosto de 2025 a las 1:00 p.m. (Hora de Perú).
+                  <strong>6.2 Sorteo:</strong> Viernes 13 de febrero de 2026 a las 12:00 p.m. (Hora de Perú).
                 </p>
                 <p className="leading-relaxed">
                   <strong>6.3 Resultados:</strong> Se publicarán en el Fanpage oficial de APOFI.

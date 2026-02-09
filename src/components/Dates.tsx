@@ -44,14 +44,14 @@ export default function Dates() {
                 <div className="flex items-center justify-center md:justify-start gap-3">
                   <Calendar className="w-5 h-5 text-blue-600" />
                   <span className="text-lg font-semibold text-gray-800">
-                    Sábado 6 de septiembre de 2025
+                    Viernes 13 de febrero de 2026
                   </span>
                 </div>
                 
                 <div className="flex items-center justify-center md:justify-start gap-3">
                   <Clock className="w-5 h-5 text-blue-600" />
                   <span className="text-lg font-semibold text-gray-800">
-                    1:00 p.m. (Hora de Perú)
+                    12:00 p.m. (Hora de Perú)
                   </span>
                 </div>
               </div>
