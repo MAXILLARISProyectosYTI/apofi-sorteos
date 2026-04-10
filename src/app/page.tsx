@@ -1,18 +1,46 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { User, Phone, Mail, CheckCircle2, FileText, Shield } from 'lucide-react';
+import { User, Phone, Mail, CheckCircle2, FileText, Shield, AlertCircle } from 'lucide-react';
+
+const API_URL = 'https://www.api.whatsapp.maxillaris.pe/apofi/api6/campaigns/maxillaris-abr-2026';
+
+function onlyLetters(value: string): boolean {
+  return /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(value);
+}
+
+function validateField(field: string, value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed) return 'Este campo es obligatorio';
+  if (field === 'firstName' || field === 'lastNameFather' || field === 'lastNameMother') {
+    if (trimmed.length < 2) return 'Mínimo 2 caracteres';
+    if (!onlyLetters(trimmed)) return 'Solo se permiten letras';
+  }
+  if (field === 'phone') {
+    const digits = trimmed.replace(/\s+/g, '');
+    if (!/^\d{9}$/.test(digits)) return 'Debe tener exactamente 9 dígitos';
+    if (!digits.startsWith('9')) return 'Debe empezar con 9';
+  }
+  if (field === 'email') {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return 'Correo electrónico no válido';
+  }
+  return null;
+}
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [countdown, setCountdown] = useState(4);
   const [formData, setFormData] = useState({
-    fullName: '',
+    firstName: '',
+    lastNameFather: '',
+    lastNameMother: '',
     phone: '',
     email: '',
     acceptTerms: false
   });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string | null>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -43,71 +71,99 @@ export default function Home() {
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (typeof value === 'string' && touched[field]) {
+      setFieldErrors(prev => ({ ...prev, [field]: validateField(field, value) }));
+    }
+  };
+
+  const handleBlur = (field: string) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    const value = formData[field as keyof typeof formData];
+    if (typeof value === 'string') {
+      setFieldErrors(prev => ({ ...prev, [field]: validateField(field, value) }));
+    }
+  };
+
+  const validateAllFields = (): boolean => {
+    const fields = ['firstName', 'lastNameFather', 'lastNameMother', 'phone', 'email'] as const;
+    const errors: Record<string, string | null> = {};
+    const allTouched: Record<string, boolean> = {};
+    let valid = true;
+
+    for (const field of fields) {
+      allTouched[field] = true;
+      const error = validateField(field, formData[field]);
+      errors[field] = error;
+      if (error) valid = false;
+    }
+
+    if (!formData.acceptTerms) valid = false;
+
+    setFieldErrors(errors);
+    setTouched(allTouched);
+    return valid;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setApiError(null);
+
+    if (!validateAllFields()) return;
+
     setIsSubmitting(true);
     
     try {
-      // Dividir el nombre completo en partes para la API
-      const nameParts = formData.fullName.trim().split(/\s+/);
-      const firstName = nameParts[0] || '';
-      const lastNameFather = nameParts.length > 1 ? nameParts[1] : '';
-      const lastNameMother = nameParts.length > 2 ? nameParts.slice(2).join(' ') : '';
-      
-      // Preparar los datos para la API de Maxillaris
       const apiData = {
-        firstName: firstName,
-        lastNameFather: lastNameFather,
-        lastNameMother: lastNameMother,
-        phoneNumber: formData.phone.trim(),
-        email: formData.email.trim(),
-        nameCampaign: 'apofi_13022026'
+        firstName: formData.firstName.trim(),
+        lastNameFather: formData.lastNameFather.trim(),
+        lastNameMother: formData.lastNameMother.trim(),
+        phoneNumber: formData.phone.trim().replace(/\s+/g, ''),
+        email: formData.email.trim().toLowerCase(),
       };
 
-      console.log('Enviando datos a la API:', apiData);
-
-      // Enviar datos a la API de Maxillaris
-      const response = await fetch('https://www.support.maxillaris.pe/api_apofi/campaigns', {
+      const response = await fetch(`${API_URL}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(apiData)
       });
 
       if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || `Error HTTP: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log('Respuesta de la API:', result);
-      
-      // Éxito - mostrar confirmación
       setIsSubmitted(true);
       setIsSubmitting(false);
       
-      // Mostrar animación de confirmación después de 2 segundos
       setTimeout(() => {
         setShowConfirmation(true);
       }, 2000);
 
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
-      
-      // Error - mostrar mensaje de error
       setIsSubmitting(false);
-      setApiError('Hubo un error al enviar tu participación. Por favor, intenta nuevamente.');
+      setApiError(
+        error instanceof Error && error.message !== 'Failed to fetch'
+          ? error.message
+          : 'Hubo un error al enviar tu participación. Por favor, intenta nuevamente.'
+      );
     }
   };
 
   const resetForm = () => {
-    setFormData({ fullName: '', phone: '', email: '', acceptTerms: false });
+    setFormData({ firstName: '', lastNameFather: '', lastNameMother: '', phone: '', email: '', acceptTerms: false });
+    setFieldErrors({});
+    setTouched({});
     setIsSubmitted(false);
     setShowConfirmation(false);
     setApiError(null);
   };
+
+  const filledCount = [
+    formData.firstName, formData.lastNameFather, formData.lastNameMother,
+    formData.phone, formData.email
+  ].filter(v => v.trim() !== '').length + (formData.acceptTerms ? 1 : 0);
+  const progressPercent = Math.round((filledCount / 6) * 100);
 
   return (
     <div className="min-h-screen">
@@ -411,52 +467,110 @@ export default function Home() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                  {/* Indicador de progreso mejorado */}
+                  {/* Indicador de progreso */}
                   <div className="mb-8 bg-gray-50 rounded-xl p-4 border border-gray-100">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Progreso de Completado</span>
-                      <span className="text-sm font-bold text-blue-600">
-                        {((formData.fullName && formData.phone && formData.email && formData.acceptTerms) ? 100 : 
-                          ((formData.fullName ? 1 : 0) + (formData.phone ? 1 : 0) + (formData.email ? 1 : 0) + (formData.acceptTerms ? 1 : 0)) * 25).toFixed(0)}%
-                      </span>
+                      <span className="text-sm font-bold text-blue-600">{progressPercent}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                      <div 
+                      <div
                         className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 h-2.5 rounded-full transition-all duration-700 ease-out shadow-sm"
-                        style={{ 
-                          width: `${(formData.fullName && formData.phone && formData.email && formData.acceptTerms) ? 100 : 
-                            ((formData.fullName ? 1 : 0) + (formData.phone ? 1 : 0) + (formData.email ? 1 : 0) + (formData.acceptTerms ? 1 : 0)) * 25}%` 
-                        }}
+                        style={{ width: `${progressPercent}%` }}
                       ></div>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                    <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
                       <User className="w-4 h-4 text-gray-400" />
-                      Nombre Completo
+                      Nombres
                       <span className="text-red-500">*</span>
                     </label>
                     <div className="relative group">
-                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                      <div className={`absolute left-4 top-1/2 transform -translate-y-1/2 transition-colors ${touched.firstName && fieldErrors.firstName ? 'text-red-400' : 'text-gray-400 group-focus-within:text-blue-500'}`}>
                         <User className="w-5 h-5" />
                       </div>
                       <input
                         type="text"
-                        id="fullName"
-                        value={formData.fullName}
-                        onChange={(e) => handleInputChange('fullName', e.target.value)}
-                        placeholder="Ej: Juan Pérez García"
-                        className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
+                        id="firstName"
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        onBlur={() => handleBlur('firstName')}
+                        placeholder="Ej: Juan Carlos"
+                        className={`w-full pl-12 pr-4 py-3.5 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 ${touched.firstName && fieldErrors.firstName ? 'border-red-400' : 'border-gray-300'}`}
                         required
                       />
                     </div>
-                    {formData.fullName && (
+                    {touched.firstName && fieldErrors.firstName ? (
+                      <div className="flex items-center gap-2 text-red-500 text-xs font-medium">
+                        <AlertCircle className="w-4 h-4" />
+                        {fieldErrors.firstName}
+                      </div>
+                    ) : formData.firstName.trim().length >= 2 && (
                       <div className="flex items-center gap-2 text-green-600 text-xs font-medium">
                         <CheckCircle2 className="w-4 h-4" />
                         Campo completado
                       </div>
                     )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label htmlFor="lastNameFather" className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                        Apellido Paterno
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="lastNameFather"
+                        value={formData.lastNameFather}
+                        onChange={(e) => handleInputChange('lastNameFather', e.target.value)}
+                        onBlur={() => handleBlur('lastNameFather')}
+                        placeholder="Ej: Pérez"
+                        className={`w-full px-4 py-3.5 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 ${touched.lastNameFather && fieldErrors.lastNameFather ? 'border-red-400' : 'border-gray-300'}`}
+                        required
+                      />
+                      {touched.lastNameFather && fieldErrors.lastNameFather ? (
+                        <div className="flex items-center gap-2 text-red-500 text-xs font-medium">
+                          <AlertCircle className="w-4 h-4" />
+                          {fieldErrors.lastNameFather}
+                        </div>
+                      ) : formData.lastNameFather.trim().length >= 2 && (
+                        <div className="flex items-center gap-2 text-green-600 text-xs font-medium">
+                          <CheckCircle2 className="w-4 h-4" />
+                          Completado
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="lastNameMother" className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                        Apellido Materno
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="lastNameMother"
+                        value={formData.lastNameMother}
+                        onChange={(e) => handleInputChange('lastNameMother', e.target.value)}
+                        onBlur={() => handleBlur('lastNameMother')}
+                        placeholder="Ej: García"
+                        className={`w-full px-4 py-3.5 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 ${touched.lastNameMother && fieldErrors.lastNameMother ? 'border-red-400' : 'border-gray-300'}`}
+                        required
+                      />
+                      {touched.lastNameMother && fieldErrors.lastNameMother ? (
+                        <div className="flex items-center gap-2 text-red-500 text-xs font-medium">
+                          <AlertCircle className="w-4 h-4" />
+                          {fieldErrors.lastNameMother}
+                        </div>
+                      ) : formData.lastNameMother.trim().length >= 2 && (
+                        <div className="flex items-center gap-2 text-green-600 text-xs font-medium">
+                          <CheckCircle2 className="w-4 h-4" />
+                          Completado
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="space-y-2">
@@ -466,7 +580,7 @@ export default function Home() {
                       <span className="text-red-500">*</span>
                     </label>
                     <div className="relative group">
-                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                      <div className={`absolute left-4 top-1/2 transform -translate-y-1/2 transition-colors ${touched.phone && fieldErrors.phone ? 'text-red-400' : 'text-gray-400 group-focus-within:text-blue-500'}`}>
                         <Phone className="w-5 h-5" />
                       </div>
                       <input
@@ -474,12 +588,19 @@ export default function Home() {
                         id="phone"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
-                        placeholder="9 1234 5678"
-                        className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
+                        onBlur={() => handleBlur('phone')}
+                        placeholder="912 345 678"
+                        maxLength={11}
+                        className={`w-full pl-12 pr-4 py-3.5 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 ${touched.phone && fieldErrors.phone ? 'border-red-400' : 'border-gray-300'}`}
                         required
                       />
                     </div>
-                    {formData.phone && (
+                    {touched.phone && fieldErrors.phone ? (
+                      <div className="flex items-center gap-2 text-red-500 text-xs font-medium">
+                        <AlertCircle className="w-4 h-4" />
+                        {fieldErrors.phone}
+                      </div>
+                    ) : formData.phone.replace(/\s+/g, '').length === 9 && (
                       <div className="flex items-center gap-2 text-green-600 text-xs font-medium">
                         <CheckCircle2 className="w-4 h-4" />
                         Campo completado
@@ -494,7 +615,7 @@ export default function Home() {
                       <span className="text-red-500">*</span>
                     </label>
                     <div className="relative group">
-                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                      <div className={`absolute left-4 top-1/2 transform -translate-y-1/2 transition-colors ${touched.email && fieldErrors.email ? 'text-red-400' : 'text-gray-400 group-focus-within:text-blue-500'}`}>
                         <Mail className="w-5 h-5" />
                       </div>
                       <input
@@ -502,12 +623,18 @@ export default function Home() {
                         id="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
+                        onBlur={() => handleBlur('email')}
                         placeholder="tu@email.com"
-                        className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
+                        className={`w-full pl-12 pr-4 py-3.5 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 ${touched.email && fieldErrors.email ? 'border-red-400' : 'border-gray-300'}`}
                         required
                       />
                     </div>
-                    {formData.email && (
+                    {touched.email && fieldErrors.email ? (
+                      <div className="flex items-center gap-2 text-red-500 text-xs font-medium">
+                        <AlertCircle className="w-4 h-4" />
+                        {fieldErrors.email}
+                      </div>
+                    ) : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()) && (
                       <div className="flex items-center gap-2 text-green-600 text-xs font-medium">
                         <CheckCircle2 className="w-4 h-4" />
                         Campo completado

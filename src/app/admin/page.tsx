@@ -69,7 +69,7 @@ export default function AdminPage() {
   const fetchRegistrations = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://www.support.maxillaris.pe/api_apofi/campaigns/apofi_13022026');
+      const response = await fetch('https://www.api.whatsapp.maxillaris.pe/apofi/api6/campaigns/maxillaris-abr-2026');
       
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
