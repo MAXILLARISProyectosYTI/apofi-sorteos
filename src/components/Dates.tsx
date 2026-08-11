@@ -44,7 +44,7 @@ export default function Dates() {
                 <div className="flex items-center justify-center md:justify-start gap-3">
                   <Calendar className="w-5 h-5 text-blue-600" />
                   <span className="text-lg font-semibold text-gray-800">
-                    Sábado 08 de Agosto de 2026
+                    Lunes 17 de Agosto de 2026
                   </span>
                 </div>
                 
