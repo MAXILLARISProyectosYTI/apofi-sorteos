@@ -775,7 +775,7 @@ export default function Home() {
                     <div className="grid grid-cols-3 gap-2 text-center">
                       <div className="bg-white/20 rounded-lg p-3">
                         <div className="text-2xl font-bold">17</div>
-                        <div className="text-sm">Agosto</div>
+                        <div className="text-sm">Octubre</div>
                       </div>
                       <div className="bg-white/20 rounded-lg p-3">
                         <div className="text-2xl font-bold">12:00</div>
